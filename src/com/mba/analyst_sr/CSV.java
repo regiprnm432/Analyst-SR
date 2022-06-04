@@ -8,7 +8,7 @@ import java.util.Scanner;
  * the reading method is row by row
  * 
  * @author Sendi Setiawan
- *
+ * @author Regi Purnama
  */
 public class CSV {
 	private Scanner scan;

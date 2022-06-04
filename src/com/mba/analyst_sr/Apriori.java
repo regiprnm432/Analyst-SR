@@ -1,7 +1,8 @@
 package com.mba.analyst_sr;
 
 /**
- * This class 
+ * This class is used for calculating apriori property
+ * (confidence and lift)
  * 
  * @author Sendi Setiawan
  */
