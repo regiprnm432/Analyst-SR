@@ -5,15 +5,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class is used to control the file
+ * and cleaning the data from file
+ * 
+ * @author Sendi Setiawan
+ *
+ */
 public class TransactionData {
-	private CSV csv = new CSV();
-	private String[] dataCells;
-	private File file;
-	private static Map<String, Integer> idReference = new HashMap<>();
-	static Map<String, Integer> itemCount = new HashMap<>();
-	private ArrayList<Integer> itemSet = new ArrayList<>();
-	private int numberOfTransactions;
-	
+
+	//Getter and Setter
 	public void setFile(File file) {
 		this.file = file;
 	}
@@ -26,18 +27,25 @@ public class TransactionData {
 		return numberOfTransactions;
 	}
 	
+	//Make pointer in file go back to initial position
 	public void rewind() {
 		readFile();
 	}
 
+	//read file to scanner
 	public void readFile() {
 		csv.readCSV(file);
 	}
 	
+	//close file stream
 	public void closeSteram() {
 		csv.closeStream();
 	}
 
+	/**
+	 * This method will make an id for all item
+	 * id will be an Integer type
+	 */
 	public void makeId() {
 		ArrayList<String> allItems = new ArrayList<>();
 		
@@ -50,6 +58,13 @@ public class TransactionData {
 		}
 	}
 	
+	/**
+	 * This method will convert all items name (string)
+	 * in a single transaction to its correspondent id
+	 * 
+	 * @param items is array that contains name of items
+	 * @return array of id (integer)
+	 */
 	public ArrayList<Integer> convertItemsToId(String[] items) {
 		ArrayList<Integer> result = new ArrayList<>();
 		for(String item : items) {
@@ -60,6 +75,13 @@ public class TransactionData {
 		return result;
 	}
 	
+	/**
+	 * This method will convert id (integer) to
+	 * its correspondent name (string)
+	 * 
+	 * @param id is variable that contains id of item
+	 * @return item name (string)
+	 */
 	public static String convertIdToItem(Integer id) {
 		String result = null;
 		for(java.util.Map.Entry<String, Integer> entry : idReference.entrySet()) {
@@ -70,6 +92,12 @@ public class TransactionData {
 		return result;
 	}
 	
+	/**
+	 * This method will read next row of transaction
+	 * and return it in id form
+	 * 
+	 * @return
+	 */
 	public ArrayList<Integer> getNextTransaction() {
 		dataCells = csv.getNextRow();
 		if(dataCells.length == 0) {
@@ -86,6 +114,10 @@ public class TransactionData {
 		return convertItemsToId(dataCells);
 	}
 	
+	/**
+	 * This method will count how many time each item 
+	 * appear in all transaction
+	 */
 	public void countAllItem() {
 		do {
 			dataCells = csv.getNextRow();
@@ -100,6 +132,13 @@ public class TransactionData {
 		numberOfTransactions--;
 	}
 	
+	/**
+	 * This method will create an initial item set
+	 * all item from item set will have support that 
+	 * above the threshold
+	 * 
+	 * @param threshold is minimum support
+	 */
 	public void createItemSet(int threshold) {
 		for(String item : itemCount.keySet()) {
 			int support = itemCount.get(item);
@@ -109,4 +148,11 @@ public class TransactionData {
 		}
 	}
 	
+	private CSV csv = new CSV();
+	private String[] dataCells;
+	private File file;
+	public static Map<String, Integer> idReference = new HashMap<>();
+	static Map<String, Integer> itemCount = new HashMap<>();
+	private ArrayList<Integer> itemSet = new ArrayList<>();
+	public static int numberOfTransactions;
 }

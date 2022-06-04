@@ -5,23 +5,39 @@ import java.util.LinkedList;
 /**
  * This class is implementation of non binary tree
  * 
- * 
  * @author Sendi Setiawan
  * @author Regi Purnama
  */
 public class NBTree {
 	Node root;
 	
+	//Constructor
 	public NBTree() {
 		Integer[] initial = new Integer[1];
 		initial[0] = -1;
 		this.root = new Node(initial, 0, null, null);
 	}
 	
-	public boolean isEmptyTree() {
-		return root == null;
+	//Reset Tree
+	public void resetTree() {
+		Integer[] initial = new Integer[1];
+		initial[0] = -1;
+		this.root = new Node(initial, 0, null, null);
 	}
 	
+	//validator
+	public boolean isEmptyTree() {
+		return root.fChild == null;
+	}
+	
+	/**
+	 * This method will compare two array, is one of the arrays 
+	 * is a subset of the other array
+	 * 
+	 * @param subset 
+	 * @param superset
+	 * @return true if @param subset is subset of superset
+	 */
 	public boolean isSubset(Integer[] subset, Integer[] superset) {
 		for(int i = 0; i < subset.length; i++) {
 			if(subset[i] != superset[i]) {
@@ -31,6 +47,14 @@ public class NBTree {
 		return true;
 	}
 
+	/**
+	 * This method will compare two array, is both array 
+	 * contains same value?
+	 * 
+	 * @param id1
+	 * @param id2
+	 * @return true if both array contains same values
+	 */
 	public boolean isEqual(Integer[] id1, Integer[] id2) {
 		if(id1.length != id2.length) {
 			return false;
@@ -44,6 +68,13 @@ public class NBTree {
 		return true;
 	}	
 	
+	/**
+	 * This method will insert new node to tree
+	 * new node will be child of a node that has
+	 * the same id[0] to id[n-1]
+	 * 
+	 * @param id
+	 */
 	public void insert(Integer[] id) {
 		Node currNode = this.root;
 		int level = 0;
@@ -68,33 +99,12 @@ public class NBTree {
 		}
 	}
 	
-
-	public void levelOrderTransversal(int threshold) {
-		int countNode = 0;
-		int countCandidate = 0;
-		 
-		LinkedList<Node> queue = new LinkedList<>();
-		queue.add(root);
-		Node temp;
-		while(queue.size() != 0) {
-			temp = queue.poll();
-			countNode++;
-			if(temp.support >= threshold && temp.id.length > 1) {
-				countCandidate++;
-				for(Integer id : temp.id) {
-					System.out.print(id + ", ");
-				}
-				System.out.print(" : " + temp.support + "\n");
-			}
-			temp = temp.fChild;
-			while(temp != null) {
-				queue.add(temp);
-				temp = temp.nSibling;
-			}
-		}
-		System.out.println("count node : " + countNode + "\n Candidate = " + countCandidate);
-	}
-	
+	/**
+	 * This method will increment support of the 
+	 * passing parameter node
+	 * 
+	 * @param id is id of node that will be incremented
+	 */
 	public void addSupport(Integer[] id) {
 		Node currNode = this.root;
 		int level = 0;
@@ -116,6 +126,14 @@ public class NBTree {
 		}
 	}
 
+	/**
+	 * This method will create all rules 
+	 * from all subset that has a support >= threshold
+	 * 
+	 * @param threshold
+	 * @param numberOfTransaction
+	 * @return all possible rules
+	 */
 	public ArrayList<Rules> getAllRules(int threshold, int numberOfTransaction) {
 		ArrayList<Rules> rules = new ArrayList<>();
 		LinkedList<Node> queue = new LinkedList<>();
@@ -149,6 +167,12 @@ public class NBTree {
 		return rules;
 	}
 	
+	/**
+	 * Method to get support value of a node
+	 * 
+	 * @param subsetId
+	 * @return value of support
+	 */
 	public int getSupport(Integer[] subsetId) {
 
 		Node currNode = this.root;

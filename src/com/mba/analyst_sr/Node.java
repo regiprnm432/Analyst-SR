@@ -6,11 +6,12 @@ package com.mba.analyst_sr;
  * because we want to save more memory and we don't 
  * really need it.
  * 
- * @author sendis
- *
+ * @author Sendi Setiawan
+ * @author Regi Purnama
  */
 public class Node {
 
+	//Constructor
 	public Node(Integer[] id, int support, Node fChild, Node nSibling) {
 		this.id = id;
 		this.support = support;
